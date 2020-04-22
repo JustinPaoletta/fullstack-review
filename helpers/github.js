@@ -17,6 +17,7 @@ let getReposByUsername = (username, cb) => {
 
 
   request(options, (err, res, body) => {
+    console.log(body);
     cb(JSON.parse(body));
   });
 

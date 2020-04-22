@@ -13,16 +13,21 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    this.getMounted();
+  }
+
+  getMounted() {
     $.ajax({
-      url: 'http://localhost:1128/repos',
-      method: 'GET',
+      url: '/repos',
+      type: 'GET',
+      contentType: 'json',
       success:
         data => {
           this.setState({
             repos: data
           });
         },
-      error: () => {console.log('SAINTS GOT ROBBED')}
+      error: (xhr, status, error) => {console.log('SAINTS GOT ROBBED', error)}
     });
   }
 
@@ -34,18 +39,21 @@ class App extends React.Component {
       url: '/repos',
       contentType: 'text/plain',
       data: term,
-      success: () => {console.log('WHO DAT?!?')},
+      success: () => {this.getMounted()},
       error: (xhr, status, error) => { console.log('SAINTS GOT ROBBED', error)},
-      dataType: 'json'
     })
   }
 
   render () {
-    return (<div>
+
+    return (
+    <div>
       <h1>Github Fetcher</h1>
-      <RepoList repos={this.state.repos}/>
       <Search onSearch={this.search.bind(this)}/>
-    </div>)
+      <RepoList repos={this.state.repos}/>
+    </div>
+    )
+
   }
 }
 
